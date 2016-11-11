@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>gemfire-app-dependencies</artifactId>
-    <version>1.1.0.RC1</version>
+    <version>1.1.0.BUILD-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>gemfire-app-dependencies</name>
     <description>Spring Cloud Stream Time App Dependencies</description>
@@ -23,22 +23,22 @@
             <dependency>
                 <groupId>org.springframework.cloud.stream.app</groupId>
                 <artifactId>spring-cloud-starter-stream-source-gemfire</artifactId>
-                <version>1.1.0.RC1</version>
+                <version>1.1.0.BUILD-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.cloud.stream.app</groupId>
                 <artifactId>spring-cloud-starter-stream-source-gemfire-cq</artifactId>
-                <version>1.1.0.RC1</version>
+                <version>1.1.0.BUILD-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.cloud.stream.app</groupId>
                 <artifactId>spring-cloud-starter-stream-sink-gemfire</artifactId>
-                <version>1.1.0.RC1</version>
+                <version>1.1.0.BUILD-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.cloud.stream.app</groupId>
                 <artifactId>spring-cloud-starter-stream-common-gemfire</artifactId>
-                <version>1.1.0.RC1</version>
+                <version>1.1.0.BUILD-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.sshd</groupId>
@@ -49,7 +49,7 @@
             <dependency>
                 <groupId>org.springframework.cloud.stream.app</groupId>
                 <artifactId>gemfire-app-starters-test-support</artifactId>
-                <version>1.1.0.RC1</version>
+                <version>1.1.0.BUILD-SNAPSHOT</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>
