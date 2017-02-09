@@ -15,9 +15,6 @@
 
 package org.springframework.cloud.stream.app.gemfire.source;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertTrue;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,6 +22,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.Resource;
 
+import com.gemstone.gemfire.cache.Region;
+import com.gemstone.gemfire.cache.client.Pool;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -34,8 +33,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.PropertyPlaceholderAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.test.IntegrationTest;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.stream.app.test.gemfire.process.ProcessExecutor;
 import org.springframework.cloud.stream.app.test.gemfire.process.ProcessWrapper;
 import org.springframework.cloud.stream.app.test.gemfire.process.ServerProcess;
@@ -45,19 +43,17 @@ import org.springframework.cloud.stream.test.binder.TestSupportBinderAutoConfigu
 import org.springframework.data.gemfire.client.Interest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.gemstone.gemfire.cache.Region;
-import com.gemstone.gemfire.cache.client.Pool;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author David Turanski
  **/
 @RunWith(SpringJUnit4ClassRunner.class)
 
-@SpringApplicationConfiguration(classes = {
-		GemfireSourceConfiguration.class,
+@SpringBootTest(classes = {GemfireSourceConfiguration.class,
 		PropertyPlaceholderAutoConfiguration.class,
-		TestSupportBinderAutoConfiguration.class })
-@IntegrationTest({ "gemfire.region.regionName=Stocks"})
+		TestSupportBinderAutoConfiguration.class}, value = { "gemfire.region.regionName=Stocks"})
 @EnableConfigurationProperties(GemfireSourceProperties.class)
 public class GemfireSourceConfigurationTests {
 

@@ -15,8 +15,7 @@
 
 package org.springframework.cloud.stream.app.gemfire.cq.source;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-
+import com.gemstone.gemfire.cache.client.Pool;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,23 +23,21 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.PropertyPlaceholderAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.test.IntegrationTest;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.stream.test.binder.TestSupportBinderAutoConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.gemstone.gemfire.cache.client.Pool;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author David Turanski
  **/
 @RunWith(SpringJUnit4ClassRunner.class)
 
-@SpringApplicationConfiguration(classes = {
+@SpringBootTest( classes = {
 		GemfireCqSourceConfiguration.class,
 		PropertyPlaceholderAutoConfiguration.class,
-		TestSupportBinderAutoConfiguration.class })
-@IntegrationTest( { "gemfire.query= Select * from /Stocks"} )
+		TestSupportBinderAutoConfiguration.class }, value = { "gemfire.query= Select * from /Stocks"} )
 @EnableConfigurationProperties(GemfireCqSourceProperties.class)
 public class GemfireCqSourceConfigurationTests {
 
