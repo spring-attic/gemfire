@@ -17,6 +17,7 @@
 
     <properties>
         <sshd-core.version>0.10.1</sshd-core.version>
+		<gemfire.version>8.2.3</gemfire.version>
     </properties>
 
     <dependencyManagement>
