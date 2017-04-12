@@ -17,11 +17,13 @@ package org.springframework.cloud.stream.app.gemfire.sink;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.validation.annotation.Validated;
 
 /**
  * @author David Turanski
  */
 @ConfigurationProperties("gemfire")
+@Validated
 public class GemfireSinkProperties {
 
 	/**

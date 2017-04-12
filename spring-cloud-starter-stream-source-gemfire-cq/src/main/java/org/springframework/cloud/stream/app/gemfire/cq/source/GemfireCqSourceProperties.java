@@ -19,6 +19,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.validation.annotation.Validated;
 
 /**
  * This represents the configuration properties for the Gemfire CQ Source.
@@ -26,6 +27,7 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
  * @author David Turanski
  */
 @ConfigurationProperties("gemfire")
+@Validated
 public class GemfireCqSourceProperties {
 
 	private static final String DEFAULT_EXPRESSION = "newValue";

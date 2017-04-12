@@ -17,11 +17,13 @@ package org.springframework.cloud.stream.app.gemfire.config;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.validation.annotation.Validated;
 
 /**
  * @author David Turanski
  */
 @ConfigurationProperties("gemfire.region")
+@Validated
 public class GemfireRegionProperties {
 	/**
 	 * The region name.

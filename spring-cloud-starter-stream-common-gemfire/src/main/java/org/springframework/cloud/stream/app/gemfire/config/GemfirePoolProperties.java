@@ -20,6 +20,7 @@ import java.net.InetSocketAddress;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.validation.annotation.Validated;
 
 /**
  * Gemfire client pool configuration properties
@@ -27,6 +28,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author David Turanski
  */
 @ConfigurationProperties("gemfire.pool")
+@Validated
 public class GemfirePoolProperties {
 
 	public enum ConnectType {locator, server}
