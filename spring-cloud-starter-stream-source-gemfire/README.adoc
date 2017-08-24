@@ -20,6 +20,8 @@ N/A
 
 Gemfire `EntryEvent`, but the payload can be customized using an expression. 
 
+== Options
+
 The **$$gemfire$$** $$source$$ supports the following configuration properties:
 
 //tag::configuration-properties[]
