@@ -6,7 +6,19 @@ subscriptions enabled. By default the payload contains the updated entry value,
 but may be controlled by passing in a SpEL expression that uses the EntryEvent as the
 evaluation context.
 
-== Options
+== Input
+
+N/A 
+
+== Output
+
+==== Headers:
+
+* `Content-Type: application/x-java-object`
+
+==== Payload:
+
+Gemfire `EntryEvent`, but the payload can be customized using an expression. 
 
 The **$$gemfire$$** $$source$$ supports the following configuration properties:
 
@@ -22,5 +34,17 @@ $$gemfire.region.region-name$$:: $$The region name.$$ *($$String$$, default: `$$
 == Build
 
 ```
-$> mvn clean package
+$ ./mvnw clean install -PgenerateApps
+$ cd apps
+```
+You can find the corresponding binder based projects here.
+You can then cd into one one of the folders and build it:
+```
+$ ./mvnw clean package
+```
+
+== Examples
+
+```
+java -jar gemfire_source.jar --cacheEventExpression=" "
 ```
