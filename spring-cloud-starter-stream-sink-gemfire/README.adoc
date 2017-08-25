@@ -3,6 +3,28 @@
 
 The Gemfire sink allows one to write message payloads to a Gemfire server.
 
+== Input
+
+=== Headers
+
+* `content-type: text/plain`
+
+=== Payload
+
+* `String`
+
+=== Headers
+
+* `content-type: application/x-java-serialized-object`
+
+=== Payload
+
+* `java.io.Serializable`
+
+== Output
+
+N/A
+
 == Options
 
 The **$$gemfire$$** $$sink$$ has the following options:
@@ -17,10 +39,21 @@ $$gemfire.region.region-name$$:: $$The region name.$$ *($$String$$, default: `$$
 //end::configuration-properties[]
 
 //end::ref-doc[]
-
 == Build
 
 ```
-$ mvn clean package
+$ ./mvnw clean install -PgenerateApps
+$ cd apps
+```
+You can find the corresponding binder based projects here.
+You can then cd into one of the folders and build it:
+```
+$ ./mvnw clean package
+```
+
+== Examples
+
+```
+java -jar gemfire-sink.jar --gemfire.keyExpression=
 ```
 
