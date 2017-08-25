@@ -8,17 +8,17 @@ evaluation context.
 
 == Input
 
-N/A 
+N/A
 
 == Output
 
-==== Headers:
+=== Headers
 
-* `Content-Type: application/x-java-object`
+* `content-type: text/plain`
 
-==== Payload:
+=== Payload
 
-Gemfire `EntryEvent`, but the payload can be customized using an expression. 
+* `String`
 
 == Options
 
@@ -40,7 +40,7 @@ $ ./mvnw clean install -PgenerateApps
 $ cd apps
 ```
 You can find the corresponding binder based projects here.
-You can then cd into one one of the folders and build it:
+You can then cd into one of the folders and build it:
 ```
 $ ./mvnw clean package
 ```
@@ -48,5 +48,5 @@ $ ./mvnw clean package
 == Examples
 
 ```
-java -jar gemfire_source.jar --cacheEventExpression=" "
+java -jar gemfire_source.jar --gemfire.cacheEventExpression=" "
 ```
