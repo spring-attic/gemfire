@@ -5,6 +5,20 @@ Continuous query allows client applications to create a GemFire query using Obje
 register a CQ listener which subscribes to the query and is notified every time the query’s result set changes.
 The gemfire-cq source registers a CQ which will post CQEvent messages to the stream.
 
+== Input
+
+N/A
+
+== Output
+
+=== Headers
+
+* `content-type: text/plain`
+
+=== Payload
+
+* `String`
+
 == Options
 
 The **$$gemfire-cq$$** $$source$$ supports the following configuration properties:
@@ -21,5 +35,18 @@ $$gemfire.query$$:: $$The OQL query$$ *($$String$$, default: `$$<none>$$`)*
 == Build
 
 ```
-$> mvn clean package
+$ ./mvnw clean install -PgenerateApps
+$ cd apps
 ```
+You can find the corresponding binder based projects here.
+You can then cd into one of the folders and build it:
+```
+$ ./mvnw clean package
+```
+
+== Examples
+
+```
+java -jar gemfire-cq-source.jar --gemfire.query=
+```
+
