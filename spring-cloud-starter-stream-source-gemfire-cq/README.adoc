@@ -31,7 +31,6 @@ $$gemfire.pool.subscription-enabled$$:: $$Set to true to enable subscriptions fo
 $$gemfire.query$$:: $$The OQL query$$ *($$String$$, default: `$$<none>$$`)*
 //end::configuration-properties[]
 
-//end::ref-doc[]
 == Build
 
 ```
@@ -50,3 +49,4 @@ $ ./mvnw clean package
 java -jar gemfire-cq-source.jar --gemfire.query=
 ```
 
+//end::ref-doc[]
