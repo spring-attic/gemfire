@@ -38,7 +38,6 @@ $$gemfire.pool.subscription-enabled$$:: $$Set to true to enable subscriptions fo
 $$gemfire.region.region-name$$:: $$The region name.$$ *($$String$$, default: `$$<none>$$`)*
 //end::configuration-properties[]
 
-//end::ref-doc[]
 == Build
 
 ```
@@ -57,3 +56,4 @@ $ ./mvnw clean package
 java -jar gemfire-sink.jar --gemfire.keyExpression=
 ```
 
+//end::ref-doc[]
