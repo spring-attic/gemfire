@@ -15,39 +15,53 @@
 
 package org.springframework.cloud.stream.app.gemfire.cq.source;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Mockito.when;
+
+import com.gemstone.gemfire.cache.client.ClientCache;
 import com.gemstone.gemfire.cache.client.Pool;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.PropertyPlaceholderAutoConfiguration;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cloud.stream.test.binder.TestSupportBinderAutoConfiguration;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+import org.springframework.data.gemfire.listener.ContinuousQueryListenerContainer;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author David Turanski
  **/
 @RunWith(SpringJUnit4ClassRunner.class)
-
-@SpringBootTest( classes = {
-		GemfireCqSourceConfiguration.class,
-		PropertyPlaceholderAutoConfiguration.class,
-		TestSupportBinderAutoConfiguration.class }, value = { "gemfire.query= Select * from /Stocks"} )
-@EnableConfigurationProperties(GemfireCqSourceProperties.class)
+@SpringBootTest(classes = { GemfireCqSourceConfigurationTests.TestConfig.class }, properties = {
+		"gemfire.query= Select * from /Stocks",
+		"gemfire.security.username=user",
+		"gemfire.security.password=password"})
 public class GemfireCqSourceConfigurationTests {
-
 	@Autowired
 	private Pool pool;
 
+	@Autowired
+	ClientCache clientCache;
+
 	@Test
-	@Ignore("No Subscription Servers available")
-	public void testDefaultConfiguration() throws InterruptedException {
+	public void testDefaultConfiguration() {
 		assertThat("subscriptions should be enabled", pool.getSubscriptionEnabled());
+
+
 	}
 
+	@SpringBootApplication
+	@Import(GemfireCqSourceConfiguration.class)
+	static class TestConfig {
+		@MockBean
+		ContinuousQueryListenerContainer listenerContainer;
+
+
+		ContinuousQueryListenerContainer listenerContainer() {
+			return listenerContainer;
+		}
+
+	}
 }

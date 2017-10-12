@@ -36,6 +36,8 @@ $$gemfire.pool.connect-type$$:: $$Specifies connection type: 'server' or 'locato
 $$gemfire.pool.host-addresses$$:: $$Specifies one or more Gemfire locator or server addresses formatted as [host]:[port].$$ *($$InetSocketAddress[]$$, default: `$$<none>$$`)*
 $$gemfire.pool.subscription-enabled$$:: $$Set to true to enable subscriptions for the client pool. Required to sync updates to the client cache.$$ *($$Boolean$$, default: `$$false$$`)*
 $$gemfire.region.region-name$$:: $$The region name.$$ *($$String$$, default: `$$<none>$$`)*
+$$gemfire.security.password$$:: $$The cache password.$$ *($$String$$, default: `$$<none>$$`)*
+$$gemfire.security.username$$:: $$The cache username.$$ *($$String$$, default: `$$<none>$$`)*
 //end::configuration-properties[]
 
 == Build

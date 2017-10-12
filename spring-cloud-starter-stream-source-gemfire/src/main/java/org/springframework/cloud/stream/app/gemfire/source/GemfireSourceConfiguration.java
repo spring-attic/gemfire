@@ -24,6 +24,7 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.app.gemfire.JsonObjectTransformer;
 import org.springframework.cloud.stream.app.gemfire.config.GemfireClientRegionConfiguration;
 import org.springframework.cloud.stream.app.gemfire.config.GemfirePoolConfiguration;
+import org.springframework.cloud.stream.app.gemfire.config.GemfireSecurityProperties;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
@@ -63,7 +64,8 @@ import com.gemstone.gemfire.pdx.PdxInstance;
 @EnableBinding(Source.class)
 @Import({ KeyInterestConfiguration.class,
 		GemfirePoolConfiguration.class,
-		GemfireClientRegionConfiguration.class })
+		GemfireClientRegionConfiguration.class,
+		})
 @EnableConfigurationProperties(GemfireSourceProperties.class)
 @PropertySource("classpath:gemfire-source.properties")
 public class GemfireSourceConfiguration {
@@ -122,7 +124,7 @@ public class GemfireSourceConfiguration {
 		CacheListeningMessageProducer cacheListeningMessageProducer = new
 				CacheListeningMessageProducer(region);
 		cacheListeningMessageProducer.setOutputChannel(routerChannel());
-		cacheListeningMessageProducer.setExpressionPayload(
+		cacheListeningMessageProducer.setPayloadExpression(
 				config.getCacheEventExpression());
 		return cacheListeningMessageProducer;
 	}
