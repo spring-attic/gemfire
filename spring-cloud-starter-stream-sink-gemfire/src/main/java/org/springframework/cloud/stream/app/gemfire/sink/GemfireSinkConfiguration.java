@@ -21,6 +21,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.app.gemfire.config.GemfireClientRegionConfiguration;
 import org.springframework.cloud.stream.app.gemfire.config.GemfirePoolConfiguration;
+import org.springframework.cloud.stream.app.gemfire.config.GemfireSecurityProperties;
 import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
@@ -35,7 +36,10 @@ import java.util.Collections;
  * @author David Turanski
  */
 @EnableBinding(Sink.class)
-@Import({ GemfirePoolConfiguration.class, GemfireClientRegionConfiguration.class })
+@Import({
+	GemfirePoolConfiguration.class,
+	GemfireClientRegionConfiguration.class,
+	})
 @EnableConfigurationProperties(GemfireSinkProperties.class)
 public class GemfireSinkConfiguration {
 

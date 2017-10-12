@@ -24,6 +24,7 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.app.gemfire.JsonObjectTransformer;
 import org.springframework.cloud.stream.app.gemfire.config.GemfireClientCacheConfiguration;
 import org.springframework.cloud.stream.app.gemfire.config.GemfirePoolConfiguration;
+import org.springframework.cloud.stream.app.gemfire.config.GemfireSecurityProperties;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
@@ -59,7 +60,10 @@ import org.springframework.messaging.MessageChannel;
  * @author David Turanski
  */
 @EnableBinding(Source.class)
-@Import({ GemfireClientCacheConfiguration.class, GemfirePoolConfiguration.class })
+@Import({
+	GemfireClientCacheConfiguration.class,
+	GemfirePoolConfiguration.class,
+	})
 @EnableConfigurationProperties(GemfireCqSourceProperties.class)
 @PropertySource("gemfire-cq-source.properties")
 public class GemfireCqSourceConfiguration {
