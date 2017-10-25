@@ -124,7 +124,7 @@ public class GemfireSourceConfiguration {
 		CacheListeningMessageProducer cacheListeningMessageProducer = new
 				CacheListeningMessageProducer(region);
 		cacheListeningMessageProducer.setOutputChannel(routerChannel());
-		cacheListeningMessageProducer.setExpressionPayload(
+		cacheListeningMessageProducer.setPayloadExpression(
 				config.getCacheEventExpression());
 		return cacheListeningMessageProducer;
 	}

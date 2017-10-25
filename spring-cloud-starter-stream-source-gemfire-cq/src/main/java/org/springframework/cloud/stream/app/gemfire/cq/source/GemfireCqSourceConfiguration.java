@@ -65,7 +65,7 @@ import org.springframework.messaging.MessageChannel;
 	GemfirePoolConfiguration.class,
 	})
 @EnableConfigurationProperties(GemfireCqSourceProperties.class)
-@PropertySource("gemfire-cq-source.properties")
+@PropertySource("classpath:gemfire-cq-source.properties")
 public class GemfireCqSourceConfiguration {
 
 	@Autowired
