@@ -15,7 +15,8 @@
 
 package org.springframework.cloud.stream.app.gemfire.cq.source;
 
-import com.gemstone.gemfire.pdx.PdxInstance;
+import org.apache.geode.pdx.PdxInstance;
+
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -24,7 +25,6 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.app.gemfire.JsonObjectTransformer;
 import org.springframework.cloud.stream.app.gemfire.config.GemfireClientCacheConfiguration;
 import org.springframework.cloud.stream.app.gemfire.config.GemfirePoolConfiguration;
-import org.springframework.cloud.stream.app.gemfire.config.GemfireSecurityProperties;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
@@ -41,7 +41,7 @@ import org.springframework.messaging.MessageChannel;
 
 /**
  * The Gemfire CQ Source provides a {@link ContinuousQueryMessageProducer} which
- * by default, emits an object of type {@link com.gemstone.gemfire.cache.query.CqEvent}.
+ * by default, emits an object of type {@link CqEvent}.
  * This is not ideal for streaming applications because it require this type to
  * be also in the consuming app's classpath. Hence, a SpEl Expression, given by the
  * property 'qcEventExpression' is used to extract required information from the
@@ -119,7 +119,7 @@ public class GemfireCqSourceConfiguration {
 		ContinuousQueryMessageProducer continuousQueryMessageProducer = new
 				ContinuousQueryMessageProducer(continuousQueryListenerContainer(),
 				config.getQuery());
-		continuousQueryMessageProducer.setExpressionPayload(config.getCqEventExpression());
+		continuousQueryMessageProducer.setPayloadExpression(config.getCqEventExpression());
 		continuousQueryMessageProducer.setOutputChannel(routerChannel());
 		return continuousQueryMessageProducer;
 	}

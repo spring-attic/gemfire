@@ -15,7 +15,8 @@
 
 package org.springframework.cloud.stream.app.gemfire.config;
 
-import org.hibernate.validator.constraints.NotBlank;
+import javax.validation.constraints.NotBlank;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 

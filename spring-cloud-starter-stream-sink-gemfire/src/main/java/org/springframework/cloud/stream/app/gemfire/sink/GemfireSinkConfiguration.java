@@ -15,22 +15,22 @@
 
 package org.springframework.cloud.stream.app.gemfire.sink;
 
-import com.gemstone.gemfire.cache.Region;
+import java.util.Collections;
+import javax.annotation.Resource;
+
+import org.apache.geode.cache.Region;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.app.gemfire.config.GemfireClientRegionConfiguration;
 import org.springframework.cloud.stream.app.gemfire.config.GemfirePoolConfiguration;
-import org.springframework.cloud.stream.app.gemfire.config.GemfireSecurityProperties;
 import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.gemfire.outbound.CacheWritingMessageHandler;
 import org.springframework.messaging.MessageHandler;
-
-import javax.annotation.Resource;
-import java.util.Collections;
 
 /**
  * @author David Turanski
@@ -46,8 +46,6 @@ public class GemfireSinkConfiguration {
 	@Autowired
 	private GemfireSinkProperties config;
 
-	//NOTE: https://jira.spring.io/browse/SPR-7915 supposedly fixed in SF 4.3. So
-	//should be able to change to @Autowired at that point
 	@Resource(name = "clientRegion")
 	private Region<String, ?> region;
 

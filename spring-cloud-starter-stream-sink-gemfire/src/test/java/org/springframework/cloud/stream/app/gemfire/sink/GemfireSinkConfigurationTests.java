@@ -17,9 +17,9 @@ package org.springframework.cloud.stream.app.gemfire.sink;
 
 import javax.annotation.Resource;
 
-import com.gemstone.gemfire.cache.Region;
-import com.gemstone.gemfire.cache.client.ClientCache;
-import com.gemstone.gemfire.cache.client.Pool;
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.client.ClientCache;
+import org.apache.geode.cache.client.Pool;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -28,11 +28,11 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.stream.app.gemfire.config.GemfireSecurityProperties;
 import org.springframework.data.gemfire.client.Interest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static junit.framework.TestCase.assertNull;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
 
 /**
  * @author David Turanski
@@ -41,16 +41,17 @@ import static org.junit.Assert.assertEquals;
 @SpringBootTest({"gemfire.region.regionName=Stocks", "gemfire.keyExpression='key'",
 		"gemfire.pool.hostAddresses=localhost:42424", "gemfire.pool.connectType=server"})
 @EnableConfigurationProperties({GemfireSinkProperties.class, GemfireSecurityProperties.class})
+@DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
 public class GemfireSinkConfigurationTests {
 
-	@Resource(name="clientRegion")
-	private Region region;
+	@Resource(name = "clientRegion")
+	Region<String, String> region;
 
 	@Autowired
 	private ClientCache clientCache;
 
 	@Autowired
-	private  Pool pool;
+	private Pool pool;
 
 	@Autowired(required=false)
 	private Interest<?> interest;
