@@ -31,10 +31,11 @@ import java.lang.management.RuntimeMXBean;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
+import org.apache.geode.internal.util.IOUtils;
+
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-import com.gemstone.gemfire.internal.util.IOUtils;
 
 /**
  * The ProcessUtils class is a utility class for working with process, or specifically instances

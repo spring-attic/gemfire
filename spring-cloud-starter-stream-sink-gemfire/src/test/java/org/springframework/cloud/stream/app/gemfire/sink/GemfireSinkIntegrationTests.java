@@ -22,10 +22,9 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.Resource;
 
-import com.gemstone.gemfire.cache.Region;
+import org.apache.geode.cache.Region;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -34,7 +33,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cloud.stream.annotation.Bindings;
 import org.springframework.cloud.stream.app.test.gemfire.process.ProcessExecutor;
 import org.springframework.cloud.stream.app.test.gemfire.process.ProcessWrapper;
 import org.springframework.cloud.stream.app.test.gemfire.process.ServerProcess;
@@ -42,6 +40,7 @@ import org.springframework.cloud.stream.app.test.gemfire.support.FileSystemUtils
 import org.springframework.cloud.stream.app.test.gemfire.support.ThreadUtils;
 import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.messaging.support.GenericMessage;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -56,6 +55,7 @@ import static org.junit.Assert.assertTrue;
 @SpringBootTest({"gemfire.region.regionName=Stocks", "gemfire.keyExpression='key'", "gemfire.pool.hostAddresses=localhost:42424",
 		"gemfire.pool.connectType=server"})
 @EnableConfigurationProperties(GemfireSinkProperties.class)
+@DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
 public class GemfireSinkIntegrationTests {
 
 	@Autowired
@@ -99,7 +99,7 @@ public class GemfireSinkIntegrationTests {
 	}
 
 	@Test
-	@Ignore("See https://github.com/spring-cloud/spring-cloud-stream-modules/issues/49")
+//	@Ignore("See https://github.com/spring-cloud/spring-cloud-stream-modules/issues/49")
 	public void test() {
 		gemfireSink.input().send(new GenericMessage("hello"));
 		assertThat(region.get("key"), equalTo("hello"));

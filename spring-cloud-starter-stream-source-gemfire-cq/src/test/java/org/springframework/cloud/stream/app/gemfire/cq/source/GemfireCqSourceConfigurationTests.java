@@ -15,13 +15,11 @@
 
 package org.springframework.cloud.stream.app.gemfire.cq.source;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Mockito.when;
-
-import com.gemstone.gemfire.cache.client.ClientCache;
-import com.gemstone.gemfire.cache.client.Pool;
+import org.apache.geode.cache.client.ClientCache;
+import org.apache.geode.cache.client.Pool;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,6 +27,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.gemfire.listener.ContinuousQueryListenerContainer;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author David Turanski

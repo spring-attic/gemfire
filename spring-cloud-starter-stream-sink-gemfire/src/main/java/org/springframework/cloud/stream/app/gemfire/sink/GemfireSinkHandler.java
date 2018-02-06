@@ -15,7 +15,8 @@
 
 package org.springframework.cloud.stream.app.gemfire.sink;
 
-import com.gemstone.gemfire.pdx.PdxInstance;
+import org.apache.geode.pdx.PdxInstance;
+
 import org.springframework.cloud.stream.app.gemfire.JsonObjectTransformer;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.Message;
@@ -30,18 +31,19 @@ class GemfireSinkHandler {
 	private final Boolean convertToJson;
 	private final JsonObjectTransformer transformer = new JsonObjectTransformer();
 
-	GemfireSinkHandler(MessageHandler messageHandler, Boolean convertToJson){
+	GemfireSinkHandler(MessageHandler messageHandler, Boolean convertToJson) {
 		this.messageHandler = messageHandler;
 		this.convertToJson = convertToJson;
 	}
-	public void handle(Message<?> message){
+
+	public void handle(Message<?> message) {
 		Message<?> transformedMessage = message;
 		if (convertToJson) {
 			Object payload = message.getPayload();
 
 			if (payload instanceof String) {
-				PdxInstance transformedPayload = transformer.toObject((String)payload);
-				transformedMessage =  MessageBuilder
+				PdxInstance transformedPayload = transformer.toObject((String) payload);
+				transformedMessage = MessageBuilder
 						.fromMessage(message)
 						.withPayload(transformedPayload)
 						.build();

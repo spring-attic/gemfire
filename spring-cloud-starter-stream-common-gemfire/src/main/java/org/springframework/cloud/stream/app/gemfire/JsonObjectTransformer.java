@@ -15,12 +15,12 @@
 
 package org.springframework.cloud.stream.app.gemfire;
 
-import org.springframework.integration.transformer.MessageTransformationException;
+import org.apache.geode.pdx.JSONFormatter;
+import org.apache.geode.pdx.PdxInstance;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import com.gemstone.gemfire.pdx.JSONFormatter;
-import com.gemstone.gemfire.pdx.PdxInstance;
-import com.gemstone.org.json.JSONException;
-import com.gemstone.org.json.JSONObject;
+import org.springframework.integration.transformer.MessageTransformationException;
 
 /**
  * @author David Turanski

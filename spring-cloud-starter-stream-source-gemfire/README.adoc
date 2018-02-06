@@ -49,7 +49,7 @@ $ ./mvnw clean package
 == Examples
 
 ```
-java -jar gemfire_source.jar --gemfire.cacheEventExpression=" "
+java -jar ./gemfire-source.jar --gemfire.region.region-name=MyRegion --gemfire.cacheEventExpression="newValue"
 ```
 
 //end::ref-doc[]

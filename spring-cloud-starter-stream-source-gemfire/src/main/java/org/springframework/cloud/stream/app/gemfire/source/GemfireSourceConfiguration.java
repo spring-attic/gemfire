@@ -17,6 +17,10 @@ package org.springframework.cloud.stream.app.gemfire.source;
 
 import javax.annotation.Resource;
 
+import org.apache.geode.cache.CacheListener;
+import org.apache.geode.cache.Region;
+import org.apache.geode.pdx.PdxInstance;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -24,7 +28,6 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.app.gemfire.JsonObjectTransformer;
 import org.springframework.cloud.stream.app.gemfire.config.GemfireClientRegionConfiguration;
 import org.springframework.cloud.stream.app.gemfire.config.GemfirePoolConfiguration;
-import org.springframework.cloud.stream.app.gemfire.config.GemfireSecurityProperties;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
@@ -36,12 +39,9 @@ import org.springframework.integration.gemfire.inbound.CacheListeningMessageProd
 import org.springframework.integration.router.PayloadTypeRouter;
 import org.springframework.messaging.MessageChannel;
 
-import com.gemstone.gemfire.cache.Region;
-import com.gemstone.gemfire.pdx.PdxInstance;
-
 /**
  * The Gemfire Source provides a {@link CacheListeningMessageProducer} which produces a
- * message for cache events. Internally it uses a {@link com.gemstone.gemfire.cache.CacheListener}
+ * message for cache events. Internally it uses a {@link CacheListener}
  * which, by default, emits a native GemFire type which holds all of the event details.
  * This is not ideal for streaming applications because it require this type to
  * be also in the consuming app's classpath. Hence, a SpEl Expression, given by the
@@ -65,7 +65,7 @@ import com.gemstone.gemfire.pdx.PdxInstance;
 @Import({ KeyInterestConfiguration.class,
 		GemfirePoolConfiguration.class,
 		GemfireClientRegionConfiguration.class,
-		})
+})
 @EnableConfigurationProperties(GemfireSourceProperties.class)
 @PropertySource("classpath:gemfire-source.properties")
 public class GemfireSourceConfiguration {
@@ -73,8 +73,6 @@ public class GemfireSourceConfiguration {
 	@Autowired
 	private GemfireSourceProperties config;
 
-	//NOTE: https://jira.spring.io/browse/SPR-7915 supposedly fixed in SF 4.3. So
-	//should be able to change to @Autowired at that point
 	@Resource(name = "clientRegion")
 	private Region<String, ?> region;
 
@@ -83,20 +81,20 @@ public class GemfireSourceConfiguration {
 	private MessageChannel output;
 
 	@Bean
-	public MessageChannel convertToStringChannel(){
+	public MessageChannel convertToStringChannel() {
 		return new DirectChannel();
 	}
 
 	@Bean
-	public MessageChannel routerChannel(){
+	public MessageChannel routerChannel() {
 		return new DirectChannel();
 	}
 
 	@Bean
-	PayloadTypeRouter payloadTypeRouter(){
+	PayloadTypeRouter payloadTypeRouter() {
 		PayloadTypeRouter router = new PayloadTypeRouter();
 		router.setDefaultOutputChannel(output);
-		router.setChannelMapping(PdxInstance.class.getName(),"convertToStringChannel");
+		router.setChannelMapping(PdxInstance.class.getName(), "convertToStringChannel");
 
 		return router;
 	}
@@ -108,13 +106,15 @@ public class GemfireSourceConfiguration {
 				.get();
 	}
 
-	@Bean JsonObjectTransformer transformer() {
+	@Bean
+	JsonObjectTransformer transformer() {
 		return new JsonObjectTransformer();
 	}
 
-	@Bean IntegrationFlow convertToString() {
+	@Bean
+	IntegrationFlow convertToString() {
 		return IntegrationFlows.from(convertToStringChannel())
-				.transform(transformer(),"toString")
+				.transform(transformer(), "toString")
 				.channel(output)
 				.get();
 	}
@@ -128,5 +128,4 @@ public class GemfireSourceConfiguration {
 				config.getCacheEventExpression());
 		return cacheListeningMessageProducer;
 	}
-
 }
