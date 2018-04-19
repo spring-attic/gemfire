@@ -26,6 +26,7 @@
 		<jline.version>2.11</jline.version>
 		<spirng.shell.version>1.2.0.RELEASE</spirng.shell.version>
 		<sshd-core.version>0.10.1</sshd-core.version>
+		<spring-cloud-stream.version>2.0.0.RELEASE</spring-cloud-stream.version>
 	</properties>
 
 	<dependencyManagement>
@@ -125,7 +126,7 @@
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-stream-test-support</artifactId>
-				<version>2.0.0.BUILD-SNAPSHOT</version>
+				<version>${spring-cloud-stream.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.sshd</groupId>
