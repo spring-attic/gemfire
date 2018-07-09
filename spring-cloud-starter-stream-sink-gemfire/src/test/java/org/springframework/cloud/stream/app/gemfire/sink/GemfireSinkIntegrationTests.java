@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 the original author or authors.
+ * Copyright 2015-2018 the original author or authors.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,9 +20,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
 import javax.annotation.Resource;
 
 import org.apache.geode.cache.Region;
+import org.apache.geode.pdx.PdxInstance;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -31,8 +33,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cloud.stream.app.gemfire.JsonObjectTransformer;
 import org.springframework.cloud.stream.app.test.gemfire.process.ProcessExecutor;
 import org.springframework.cloud.stream.app.test.gemfire.process.ProcessWrapper;
 import org.springframework.cloud.stream.app.test.gemfire.process.ServerProcess;
@@ -41,25 +43,30 @@ import org.springframework.cloud.stream.app.test.gemfire.support.ThreadUtils;
 import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 
 /**
  * @author David Turanski
+ * @author Christian Tzolov
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest({"gemfire.region.regionName=Stocks", "gemfire.keyExpression='key'", "gemfire.pool.hostAddresses=localhost:42424",
-		"gemfire.pool.connectType=server"})
-@EnableConfigurationProperties(GemfireSinkProperties.class)
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE,
+		properties = { "gemfire.region.regionName=Stocks", "gemfire.keyExpression='key'", "gemfire.pool.hostAddresses=localhost:42424",
+				"gemfire.pool.connectType=server" })
 @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
-public class GemfireSinkIntegrationTests {
+public abstract class GemfireSinkIntegrationTests {
 
 	@Autowired
 	protected Sink gemfireSink;
+
+	protected final JsonObjectTransformer transformer = new JsonObjectTransformer();
 
 	@Resource(name = "clientRegion")
 	Region<String, String> region;
@@ -98,11 +105,34 @@ public class GemfireSinkIntegrationTests {
 		});
 	}
 
-	@Test
-//	@Ignore("See https://github.com/spring-cloud/spring-cloud-stream-modules/issues/49")
-	public void test() {
-		gemfireSink.input().send(new GenericMessage("hello"));
-		assertThat(region.get("key"), equalTo("hello"));
+	@TestPropertySource(properties = "gemfire.json=false")
+	public static class GemfireSinkNonJsonModeTests extends GemfireSinkIntegrationTests {
+
+		@Test
+		public void test() {
+			gemfireSink.input().send(new GenericMessage("hello"));
+			assertThat(region.get("key"), equalTo("hello"));
+		}
+	}
+
+	@TestPropertySource(properties = "gemfire.json=true")
+	public static class GemfireSinkJsonModeTests extends GemfireSinkIntegrationTests {
+
+		@Test
+		public void testByteArrayJsonPayload() {
+			String messageBody = "{\"first\":\"second\"}";
+			gemfireSink.input().send(new GenericMessage(messageBody.getBytes()));
+			assertThat(region.get("key"), instanceOf(PdxInstance.class));
+			assertThat(transformer.toString(region.get("key")), equalTo(messageBody));
+		}
+
+		@Test
+		public void testStringJsonPayload() {
+			String messageBody = "{\"foo\":\"bar\"}";
+			gemfireSink.input().send(new GenericMessage(messageBody));
+			assertThat(region.get("key"), instanceOf(PdxInstance.class));
+			assertThat(transformer.toString(region.get("key")), equalTo(messageBody));
+		}
 	}
 
 	@AfterClass

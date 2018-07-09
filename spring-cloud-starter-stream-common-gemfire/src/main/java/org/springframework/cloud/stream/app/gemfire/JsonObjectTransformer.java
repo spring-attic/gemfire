@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 the original author or authors.
+ * Copyright (c) 2016-2018 the original author or authors.
  * Licensed under the Apache License, Version 2.0 (the "License") ;
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,6 +24,7 @@ import org.springframework.integration.transformer.MessageTransformationExceptio
 
 /**
  * @author David Turanski
+ * @author Christian Tzolov
  *
  */
 public class JsonObjectTransformer {
@@ -37,6 +38,10 @@ public class JsonObjectTransformer {
 			throw new MessageTransformationException(e.getMessage());
 		}
 		return JSONFormatter.fromJSON(jsonObject.toString());
+	}
+
+	public PdxInstance toObject(byte[] json) {
+		return toObject(new String(json));
 	}
 
 	public String toString(Object obj) {

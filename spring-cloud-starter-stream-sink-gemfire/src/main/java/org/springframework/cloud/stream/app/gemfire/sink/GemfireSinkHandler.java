@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 the original author or authors.
+ * Copyright (c) 2016-2018 the original author or authors.
  * Licensed under the Apache License, Version 2.0 (the "License") ;
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,6 +25,7 @@ import org.springframework.messaging.converter.MessageConversionException;
 
 /**
  * @author David Turanski
+ * @author Christian Tzolov
  **/
 class GemfireSinkHandler {
 	private final MessageHandler messageHandler;
@@ -41,18 +42,25 @@ class GemfireSinkHandler {
 		if (convertToJson) {
 			Object payload = message.getPayload();
 
-			if (payload instanceof String) {
-				PdxInstance transformedPayload = transformer.toObject((String) payload);
-				transformedMessage = MessageBuilder
-						.fromMessage(message)
-						.withPayload(transformedPayload)
-						.build();
+			PdxInstance transformedPayload;
+
+			if (payload instanceof byte[]) {
+				transformedPayload = transformer.toObject((byte[]) payload);
+			}
+			else if (payload instanceof String) {
+				transformedPayload = transformer.toObject((String) payload);
 			}
 			else {
 				throw new MessageConversionException(String.format(
 						"Cannot convert object of type %s", payload.getClass()
 								.getName()));
 			}
+
+			transformedMessage = MessageBuilder
+					.fromMessage(message)
+					.withPayload(transformedPayload)
+					.build();
+
 		}
 		messageHandler.handleMessage(transformedMessage);
 	}
