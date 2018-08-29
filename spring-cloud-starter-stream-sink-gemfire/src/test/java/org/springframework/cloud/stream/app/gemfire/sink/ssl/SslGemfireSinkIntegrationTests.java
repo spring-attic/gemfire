@@ -13,13 +13,9 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.stream.app.gemfire.sink;
+package org.springframework.cloud.stream.app.gemfire.sink.ssl;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
 
@@ -31,15 +27,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.stream.app.gemfire.JsonObjectTransformer;
-import org.springframework.cloud.stream.app.test.gemfire.process.ProcessExecutor;
+import org.springframework.cloud.stream.app.gemfire.sink.GemfireSinkConfiguration;
+import org.springframework.cloud.stream.app.test.gemfire.process.GeodeServerLauncherHelper;
 import org.springframework.cloud.stream.app.test.gemfire.process.ProcessWrapper;
-import org.springframework.cloud.stream.app.test.gemfire.process.ServerProcess;
-import org.springframework.cloud.stream.app.test.gemfire.support.FileSystemUtils;
-import org.springframework.cloud.stream.app.test.gemfire.support.ThreadUtils;
 import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.test.annotation.DirtiesContext;
@@ -49,7 +41,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 
 /**
@@ -58,10 +49,18 @@ import static org.junit.Assert.assertTrue;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE,
-		properties = { "gemfire.region.regionName=Stocks", "gemfire.keyExpression='key'", "gemfire.pool.hostAddresses=localhost:42424",
-				"gemfire.pool.connectType=server" })
+		properties = { "gemfire.region.regionName=Stocks",
+				"gemfire.keyExpression='key'",
+				"gemfire.pool.hostAddresses=localhost:42425",
+				"gemfire.pool.connectType=server",
+				"gemfire.security.ssl.truststoreUri=classpath:/trusted.keystore",
+				"gemfire.security.ssl.sslKeystorePassword=password",
+				"gemfire.security.ssl.sslTruststorePassword=password",
+				"spring.cloud.stream.default.binder=test",
+		},
+		classes = {GemfireSinkConfiguration.class})
 @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
-public abstract class GemfireSinkIntegrationTests {
+public abstract class SslGemfireSinkIntegrationTests {
 
 	@Autowired
 	protected Sink gemfireSink;
@@ -75,38 +74,11 @@ public abstract class GemfireSinkIntegrationTests {
 
 	@BeforeClass
 	public static void setup() throws IOException {
-		System.out.println(System.getProperty("java.home"));
-		String serverName = "GemFireTestServer";
-
-		File serverWorkingDirectory = new File(FileSystemUtils.WORKING_DIRECTORY, serverName.toLowerCase());
-
-		assertTrue(serverWorkingDirectory.isDirectory() || serverWorkingDirectory.mkdirs());
-
-		List<String> arguments = new ArrayList<String>();
-
-		arguments.add("-Dgemfire.name=" + serverName);
-		arguments.add("gemfire-server.xml");
-
-		serverProcess = ProcessExecutor.launch(serverWorkingDirectory, ServerProcess.class,
-				arguments.toArray(new String[arguments.size()]));
-
-		waitForServerStart(TimeUnit.SECONDS.toMillis(20));
+		serverProcess = GeodeServerLauncherHelper.startGeode("SslGemFireTestServer", "ssl-gemfire-server.xml");
 	}
 
-	private static void waitForServerStart(final long milliseconds) {
-		ThreadUtils.timedWait(milliseconds, TimeUnit.MILLISECONDS.toMillis(500), new ThreadUtils.WaitCondition() {
-			private File serverPidControlFile = new File(serverProcess.getWorkingDirectory(),
-					ServerProcess.getServerProcessControlFilename());
-
-			@Override
-			public boolean waiting() {
-				return !serverPidControlFile.isFile();
-			}
-		});
-	}
-
-	@TestPropertySource(properties = "gemfire.json=false")
-	public static class GemfireSinkNonJsonModeTests extends GemfireSinkIntegrationTests {
+	@TestPropertySource(properties = { "gemfire.json=false"})
+	public static class GemfireSinkNonJsonModeTests extends SslGemfireSinkIntegrationTests {
 
 		@Test
 		public void test() {
@@ -116,7 +88,7 @@ public abstract class GemfireSinkIntegrationTests {
 	}
 
 	@TestPropertySource(properties = "gemfire.json=true")
-	public static class GemfireSinkJsonModeTests extends GemfireSinkIntegrationTests {
+	public static class GemfireSinkJsonModeTests extends SslGemfireSinkIntegrationTests {
 
 		@Test
 		public void testByteArrayJsonPayload() {
@@ -137,19 +109,15 @@ public abstract class GemfireSinkIntegrationTests {
 
 	@AfterClass
 	public static void tearDown() {
-		serverProcess.shutdown();
-
-		if (Boolean.valueOf(System.getProperty("spring.gemfire.fork.clean", Boolean.TRUE.toString()))) {
-			org.springframework.util.FileSystemUtils.deleteRecursively(serverProcess.getWorkingDirectory());
+		GeodeServerLauncherHelper.tearDown(serverProcess);
+		while (serverProcess.isRunning()) {
+			try {
+				Thread.sleep(1000);
+			}
+			catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
+
 	}
-
-	@SpringBootApplication
-	static class GemfireSinkApplication {
-
-		public static void main(String[] args) {
-			SpringApplication.run(GemfireSinkApplication.class, args);
-		}
-	}
-
 }

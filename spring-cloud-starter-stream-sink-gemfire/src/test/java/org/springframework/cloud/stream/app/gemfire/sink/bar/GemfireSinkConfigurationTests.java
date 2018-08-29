@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.stream.app.gemfire.sink;
+package org.springframework.cloud.stream.app.gemfire.sink.bar;
 
 import javax.annotation.Resource;
 
@@ -27,6 +27,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.stream.app.gemfire.config.GemfireSecurityProperties;
+import org.springframework.cloud.stream.app.gemfire.sink.GemfireSinkConfiguration;
+import org.springframework.cloud.stream.app.gemfire.sink.GemfireSinkProperties;
 import org.springframework.data.gemfire.client.Interest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -38,9 +40,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * @author David Turanski
  **/
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest({"gemfire.region.regionName=Stocks", "gemfire.keyExpression='key'",
-		"gemfire.pool.hostAddresses=localhost:42424", "gemfire.pool.connectType=server"})
-@EnableConfigurationProperties({GemfireSinkProperties.class, GemfireSecurityProperties.class})
+@SpringBootTest(value = { "gemfire.region.regionName=Stocks", "gemfire.keyExpression='key'",
+		"gemfire.pool.hostAddresses=localhost:42424", "gemfire.pool.connectType=server",
+		"spring.cloud.stream.default.binder=test" },
+		classes = { GemfireSinkConfiguration.class })
+@EnableConfigurationProperties({ GemfireSinkProperties.class, GemfireSecurityProperties.class })
 @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
 public class GemfireSinkConfigurationTests {
 
@@ -53,12 +57,12 @@ public class GemfireSinkConfigurationTests {
 	@Autowired
 	private Pool pool;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	private Interest<?> interest;
 
 	@Test
 	public void testDefaultConfiguration() {
 		assertNull("interest should be null", interest);
-		assertThat("subscriptions should not be enabled",!pool.getSubscriptionEnabled());
+		assertThat("subscriptions should not be enabled", !pool.getSubscriptionEnabled());
 	}
 }

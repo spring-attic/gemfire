@@ -13,11 +13,16 @@
 		<prop key="name">TestServer</prop>
 		<prop key="mcast-port">0</prop>
 		<prop key="log-level">warning</prop>
+		<prop key="ssl-enabled-components">server,locator</prop>
+		<prop key="ssl-keystore">../src/test/resources/trusted.keystore</prop>
+		<prop key="ssl-keystore-password">password</prop>
+		<prop key="ssl-truststore">../src/test/resources/trusted.keystore</prop>
+		<prop key="ssl-truststore-password">password</prop>
 	</util:properties>
 
 	<gfe:cache properties-ref="gemfireProperties"/>
 
-	<gfe:cache-server auto-startup="true" bind-address="localhost" port="42424" host-name-for-clients="localhost"
+	<gfe:cache-server auto-startup="true" bind-address="localhost" port="42425" host-name-for-clients="localhost"
 					  max-connections="1"/>
 
 	<gfe:replicated-region id="Stocks"/>
