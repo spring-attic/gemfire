@@ -34,11 +34,11 @@ public class GemfireSslProperties {
 	/**
 	 * Name of the local trust store file copied in the local file system.
 	 */
-	public static String LOCAL_TRUSTSTORE_FILE_NAME = "trusted.keystore";
+	public static final String LOCAL_TRUSTSTORE_FILE_NAME = "trusted.keystore";
 	/**
 	 * Name of the local trust store file copied in the local file system.
 	 */
-	public static String LOCAL_KEYSTORE_FILE_NAME = "keystore.keystore";
+	public static final String LOCAL_KEYSTORE_FILE_NAME = "keystore.keystore";
 
 	/**
 	 * Local directory to store the truststore and keystore files copied form the remote truststoreUri and getKeystoreUri uris.
