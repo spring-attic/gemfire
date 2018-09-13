@@ -56,8 +56,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 				"gemfire.pool.connectType=server",
 				"spring.cloud.stream.default.binder=test"
 		},
-        classes = {GemfireSinkConfiguration.class})
-@DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
+		classes = { GemfireSinkConfiguration.class })
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public abstract class GemfireSinkIntegrationTests {
 
 	@Autowired
@@ -75,7 +75,7 @@ public abstract class GemfireSinkIntegrationTests {
 		serverProcess = GeodeServerLauncherHelper.startGeode("GemFireTestServer", "gemfire-server.xml");
 	}
 
-	@TestPropertySource(properties = { "gemfire.json=false"})
+	@TestPropertySource(properties = { "gemfire.json=false" })
 	public static class GemfireSinkNonJsonModeTests extends GemfireSinkIntegrationTests {
 
 		@Ignore

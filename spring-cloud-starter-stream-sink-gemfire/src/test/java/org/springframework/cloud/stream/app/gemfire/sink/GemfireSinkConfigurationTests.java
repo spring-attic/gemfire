@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.stream.app.gemfire.sink.bar;
+package org.springframework.cloud.stream.app.gemfire.sink;
 
 import javax.annotation.Resource;
 
@@ -24,13 +24,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cloud.stream.app.gemfire.config.GemfireSecurityProperties;
-import org.springframework.cloud.stream.app.gemfire.sink.GemfireSinkConfiguration;
-import org.springframework.cloud.stream.app.gemfire.sink.GemfireSinkProperties;
 import org.springframework.data.gemfire.client.Interest;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static junit.framework.TestCase.assertNull;
@@ -44,8 +39,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 		"gemfire.pool.hostAddresses=localhost:42424", "gemfire.pool.connectType=server",
 		"spring.cloud.stream.default.binder=test" },
 		classes = { GemfireSinkConfiguration.class })
-@EnableConfigurationProperties({ GemfireSinkProperties.class, GemfireSecurityProperties.class })
-@DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
 public class GemfireSinkConfigurationTests {
 
 	@Resource(name = "clientRegion")
