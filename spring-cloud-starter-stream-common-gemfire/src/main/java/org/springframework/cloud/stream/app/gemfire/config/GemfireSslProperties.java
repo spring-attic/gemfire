@@ -15,31 +15,41 @@
 
 package org.springframework.cloud.stream.app.gemfire.config;
 
+import javax.validation.constraints.AssertTrue;
+import javax.validation.constraints.NotBlank;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.core.io.Resource;
+import org.springframework.util.StringUtils;
+import org.springframework.validation.annotation.Validated;
 
 /**
  * @author Christian Tzolov
  */
 @ConfigurationProperties("gemfire.security.ssl")
+@Validated
 public class GemfireSslProperties {
 
 	private static final String USER_HOME_DIRECTORY = System.getProperty("user.home");
+	/**
+	 * Name of the local trust store file copied in the local file system.
+	 */
+	public static String LOCAL_TRUSTSTORE_FILE_NAME = "trusted.keystore";
+	/**
+	 * Name of the local trust store file copied in the local file system.
+	 */
+	public static String LOCAL_KEYSTORE_FILE_NAME = "keystore.keystore";
 
 	/**
-	 * Location of the pre-created truststore file to be used for connecting to the Geode cluster
+	 * Local directory to store the truststore and keystore files copied form the remote truststoreUri and getKeystoreUri uris.
+	 */
+	@NotBlank
+	private String userHomeDirectory = USER_HOME_DIRECTORY;
+
+	/**
+	 * Location of the pre-created truststore URI to be used for connecting to the Geode cluster
 	 */
 	private Resource truststoreUri;
-
-	/**
-	 * Name of the trust store file copied in the local file system.
-	 */
-	private String storeFileName = "trusted.keystore";
-
-	/**
-	 * Password for accessing the keys truststore
-	 */
-	private String sslKeystorePassword;
 
 	/**
 	 * Password for accessing the trust store
@@ -47,9 +57,32 @@ public class GemfireSslProperties {
 	private String sslTruststorePassword;
 
 	/**
-	 * Local location to copy the trust store file.
+	 * Identifies the type of truststore used for SSL communications. (e.g. {@literal JKS}, {@literal PKCS11}, etc.)
 	 */
-	private String userHomeDirectory = USER_HOME_DIRECTORY;
+	@NotBlank
+	private String truststoreType = "JKS";
+
+	/**
+	 * Location of the pre-created {@literal Keystore} URI to be used for connecting to the Geode cluster
+	 */
+	private Resource keystoreUri;
+
+	/**
+	 * Password for accessing the keys truststore
+	 */
+	private String sslKeystorePassword;
+
+	/**
+	 * Identifies the type of Keystore used for SSL communications. (e.g. {@literal JKS}, {@literal PKCS11}, etc.)
+	 */
+	@NotBlank
+	private String keystoreType = "JKS";
+
+	/**
+	 * Configures the SSL ciphers used for secure Socket connections as an array of valid cipher names.
+	 */
+	@NotBlank
+	private String ciphers = "any";
 
 	public Resource getTruststoreUri() {
 		return truststoreUri;
@@ -57,14 +90,6 @@ public class GemfireSslProperties {
 
 	public void setTruststoreUri(Resource truststoreUri) {
 		this.truststoreUri = truststoreUri;
-	}
-
-	public String getStoreFileName() {
-		return storeFileName;
-	}
-
-	public void setStoreFileName(String storeFileName) {
-		this.storeFileName = storeFileName;
 	}
 
 	public String getSslKeystorePassword() {
@@ -90,4 +115,53 @@ public class GemfireSslProperties {
 	public void setUserHomeDirectory(String userHomeDirectory) {
 		this.userHomeDirectory = userHomeDirectory;
 	}
+
+	public String getTruststoreType() {
+		return truststoreType;
+	}
+
+	public void setTruststoreType(String truststoreType) {
+		this.truststoreType = truststoreType;
+	}
+
+	public Resource getKeystoreUri() {
+		return keystoreUri;
+	}
+
+	public void setKeystoreUri(Resource keystoreUri) {
+		this.keystoreUri = keystoreUri;
+	}
+
+	public String getKeystoreType() {
+		return keystoreType;
+	}
+
+	public void setKeystoreType(String keystoreType) {
+		this.keystoreType = keystoreType;
+	}
+
+	public String getCiphers() {
+		return ciphers;
+	}
+
+	public void setCiphers(String ciphers) {
+		this.ciphers = ciphers;
+	}
+
+	public boolean isSslEnabled() {
+		return this.truststoreUri != null && this.keystoreUri != null;
+	}
+
+	@AssertTrue(message = "The truststoreUri and keystoreUri should together be either empty or not!")
+	private boolean isStoreUrisConsistent() {
+		return ((this.truststoreUri == null) && (this.keystoreUri == null)) ||
+				((this.truststoreUri != null) && (this.keystoreUri != null));
+	}
+
+	@AssertTrue(message = "The sslKeystorePassword and sslKeystorePassword must not be empty for non empty store URIs!")
+	private boolean isStorePasswordRequiredForValidStoreUri() {
+		return (this.isSslEnabled() == false) ||
+				(!StringUtils.isEmpty(this.sslKeystorePassword) && !StringUtils.isEmpty(this.sslTruststorePassword));
+	}
+
 }

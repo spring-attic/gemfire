@@ -22,10 +22,14 @@ import java.util.Properties;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.Resource;
 import org.springframework.data.gemfire.client.ClientCacheFactoryBean;
 import org.springframework.data.gemfire.util.PropertiesBuilder;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StringUtils;
+
+import static org.springframework.cloud.stream.app.gemfire.config.GemfireSslProperties.LOCAL_KEYSTORE_FILE_NAME;
+import static org.springframework.cloud.stream.app.gemfire.config.GemfireSslProperties.LOCAL_TRUSTSTORE_FILE_NAME;
 
 /**
  * @author David Turanski
@@ -55,7 +59,7 @@ public class GemfireClientCacheConfiguration {
 			clientCacheFactoryBean.setProperties(properties);
 		}
 
-		if (sslProperties.getTruststoreUri() != null) {
+		if (sslProperties.isSslEnabled()) {
 			PropertiesBuilder pb = new PropertiesBuilder();
 			pb.add(clientCacheFactoryBean.getProperties());
 			pb.add(this.toGeodeSslProperties(sslProperties));
@@ -74,32 +78,48 @@ public class GemfireClientCacheConfiguration {
 	 */
 	private Properties toGeodeSslProperties(GemfireSslProperties sslProperties) {
 
-		String trustKeyStorePath = this.resolveTrustedKeystore(sslProperties);
 		PropertiesBuilder pb = new PropertiesBuilder();
 		pb.setProperty("ssl-enabled-components", "server,locator");
-		pb.setProperty("ssl-keystore", trustKeyStorePath);
+
+		pb.setProperty("ssl-keystore", this.resolveRemoteStore(sslProperties.getKeystoreUri(),
+				sslProperties.getUserHomeDirectory(), LOCAL_KEYSTORE_FILE_NAME));
 		pb.setProperty("ssl-keystore-password", sslProperties.getSslKeystorePassword());
-		pb.setProperty("ssl-truststore", trustKeyStorePath);
+		pb.setProperty("ssl-keystore-type", sslProperties.getKeystoreType());
+
+		pb.setProperty("ssl-truststore", this.resolveRemoteStore(sslProperties.getTruststoreUri(),
+				sslProperties.getUserHomeDirectory(), LOCAL_TRUSTSTORE_FILE_NAME));
 		pb.setProperty("ssl-truststore-password", sslProperties.getSslTruststorePassword());
+		pb.setProperty("ssl-truststore-type", sslProperties.getTruststoreType());
+
+		pb.setProperty("ssl-ciphers", sslProperties.getCiphers());
 
 		return pb.build();
 	}
 
 	/**
-	 * Copy the Trust store specified in the URI into a local accessible file.
+	 * Copy the Trust or Key stores from a remote URI into a local file.
+	 *
 	 * @param sslProperties SSL gemfire properties required for retrieving the provided truststore.
 	 * @return Returns the absolute path of the local trust store copy
 	 */
-	private String resolveTrustedKeystore(GemfireSslProperties sslProperties) {
+	/**
+	 * Copy the Trust store specified in the URI into a local accessible file.
+	 *
+	 * @param storeUri Either Keystore or Truststore remote resource URI
+	 * @param userHomeDirectory local root directory to store the keystore and localsore files
+	 * @param localStoreFileName local keystore or truststore file name
+	 * @return Returns the absolute path of the local trust or keys store file copy
+	 */
+	private String resolveRemoteStore(Resource storeUri, String userHomeDirectory, String localStoreFileName) {
 
-		File trustStoreFile = new File(sslProperties.getUserHomeDirectory(), sslProperties.getStoreFileName());
+		File localStoreFile = new File(userHomeDirectory, localStoreFileName);
 		try {
-			FileCopyUtils.copy(sslProperties.getTruststoreUri().getInputStream(), new FileOutputStream(trustStoreFile));
-			return trustStoreFile.getAbsolutePath();
+			FileCopyUtils.copy(storeUri.getInputStream(), new FileOutputStream(localStoreFile));
+			return localStoreFile.getAbsolutePath();
 		}
 		catch (IOException e) {
-			throw new IllegalStateException(String.format("Failed to copy the trust store from [%s] into %s",
-					sslProperties.getTruststoreUri().getDescription(), trustStoreFile.getAbsolutePath()), e);
+			throw new IllegalStateException(String.format("Failed to copy the store from [%s] into %s",
+					storeUri.getDescription(), localStoreFile.getAbsolutePath()), e);
 		}
 	}
 }

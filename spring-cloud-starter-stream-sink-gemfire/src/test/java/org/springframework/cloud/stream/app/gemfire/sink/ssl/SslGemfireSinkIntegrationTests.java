@@ -54,6 +54,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 				"gemfire.pool.hostAddresses=localhost:42425",
 				"gemfire.pool.connectType=server",
 				"gemfire.security.ssl.truststoreUri=classpath:/trusted.keystore",
+				"gemfire.security.ssl.keystoreUri=classpath:/trusted.keystore",
 				"gemfire.security.ssl.sslKeystorePassword=password",
 				"gemfire.security.ssl.sslTruststorePassword=password",
 				"spring.cloud.stream.default.binder=test",
