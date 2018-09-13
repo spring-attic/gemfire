@@ -60,7 +60,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 				"spring.cloud.stream.default.binder=test",
 		},
 		classes = {GemfireSinkConfiguration.class})
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext
 public abstract class SslGemfireSinkIntegrationTests {
 
 	@Autowired

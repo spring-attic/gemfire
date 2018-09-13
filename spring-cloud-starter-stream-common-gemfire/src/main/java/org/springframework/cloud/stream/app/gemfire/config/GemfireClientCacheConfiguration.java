@@ -28,14 +28,10 @@ import org.springframework.data.gemfire.util.PropertiesBuilder;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StringUtils;
 
-import static org.springframework.cloud.stream.app.gemfire.config.GemfireSslProperties.LOCAL_KEYSTORE_FILE_NAME;
-import static org.springframework.cloud.stream.app.gemfire.config.GemfireSslProperties.LOCAL_TRUSTSTORE_FILE_NAME;
-
 /**
  * @author David Turanski
  * @author Christian Tzolov
  */
-
 @EnableConfigurationProperties({ GemfireSecurityProperties.class, GemfireSslProperties.class })
 public class GemfireClientCacheConfiguration {
 
@@ -82,12 +78,12 @@ public class GemfireClientCacheConfiguration {
 		pb.setProperty("ssl-enabled-components", "server,locator");
 
 		pb.setProperty("ssl-keystore", this.resolveRemoteStore(sslProperties.getKeystoreUri(),
-				sslProperties.getUserHomeDirectory(), LOCAL_KEYSTORE_FILE_NAME));
+				sslProperties.getUserHomeDirectory(), GemfireSslProperties.LOCAL_KEYSTORE_FILE_NAME));
 		pb.setProperty("ssl-keystore-password", sslProperties.getSslKeystorePassword());
 		pb.setProperty("ssl-keystore-type", sslProperties.getKeystoreType());
 
 		pb.setProperty("ssl-truststore", this.resolveRemoteStore(sslProperties.getTruststoreUri(),
-				sslProperties.getUserHomeDirectory(), LOCAL_TRUSTSTORE_FILE_NAME));
+				sslProperties.getUserHomeDirectory(), GemfireSslProperties.LOCAL_TRUSTSTORE_FILE_NAME));
 		pb.setProperty("ssl-truststore-password", sslProperties.getSslTruststorePassword());
 		pb.setProperty("ssl-truststore-type", sslProperties.getTruststoreType());
 
