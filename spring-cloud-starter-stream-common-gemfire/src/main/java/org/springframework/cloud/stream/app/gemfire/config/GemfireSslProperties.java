@@ -161,7 +161,7 @@ public class GemfireSslProperties {
 	@AssertTrue(message = "The sslKeystorePassword and sslKeystorePassword must not be empty for non empty store URIs!")
 	private boolean isStorePasswordRequiredForValidStoreUri() {
 		return (this.isSslEnabled() == false) ||
-				(!StringUtils.isEmpty(this.sslKeystorePassword) && !StringUtils.isEmpty(this.sslTruststorePassword));
+				((this.sslKeystorePassword != null) && (this.sslTruststorePassword != null));
 	}
 
 }

@@ -76,9 +76,9 @@ public abstract class GemfireSinkIntegrationTests {
 	}
 
 	@TestPropertySource(properties = { "gemfire.json=false" })
+	@Ignore("Due to some static initializations possibly while client connection, we can't run more then one IT test in the same JVM")
 	public static class GemfireSinkNonJsonModeTests extends GemfireSinkIntegrationTests {
 
-		@Ignore
 		@Test
 		public void test() {
 			gemfireSink.input().send(new GenericMessage("hello"));
@@ -87,9 +87,9 @@ public abstract class GemfireSinkIntegrationTests {
 	}
 
 	@TestPropertySource(properties = "gemfire.json=true")
+	@Ignore("Due to some static initializations possibly while client connection, we can't run more then one IT test in the same JVM")
 	public static class GemfireSinkJsonModeTests extends GemfireSinkIntegrationTests {
 
-		@Ignore
 		@Test
 		public void testByteArrayJsonPayload() {
 			String messageBody = "{\"first\":\"second\"}";
@@ -98,7 +98,6 @@ public abstract class GemfireSinkIntegrationTests {
 			assertThat(transformer.toString(region.get("key")), equalTo(messageBody));
 		}
 
-		@Ignore
 		@Test
 		public void testStringJsonPayload() {
 			String messageBody = "{\"foo\":\"bar\"}";

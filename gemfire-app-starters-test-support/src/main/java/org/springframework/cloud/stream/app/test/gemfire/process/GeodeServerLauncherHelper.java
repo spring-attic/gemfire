@@ -66,10 +66,7 @@ public class GeodeServerLauncherHelper {
 
 	public static void tearDown(ProcessWrapper serverProcess) {
 		serverProcess.shutdown();
-
-		if (Boolean.valueOf(System.getProperty("spring.gemfire.fork.clean", Boolean.TRUE.toString()))) {
-			org.springframework.util.FileSystemUtils.deleteRecursively(serverProcess.getWorkingDirectory());
-		}
+		org.springframework.util.FileSystemUtils.deleteRecursively(serverProcess.getWorkingDirectory());
 	}
 
 }

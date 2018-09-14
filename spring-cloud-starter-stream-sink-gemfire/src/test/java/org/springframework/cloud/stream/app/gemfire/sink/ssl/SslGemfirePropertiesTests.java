@@ -86,6 +86,26 @@ public class SslGemfirePropertiesTests {
 	}
 
 	@Test(expected = ConfigurationPropertiesBindException.class)
+	public void emptyUserHomeDirectory() {
+			withProperties("gemfire.security.ssl.userHomeDirectory:");
+	}
+
+	@Test(expected = ConfigurationPropertiesBindException.class)
+	public void emptyTruststoreType() {
+		withProperties("gemfire.security.ssl.truststoreType:");
+	}
+
+	@Test(expected = ConfigurationPropertiesBindException.class)
+	public void emptyKeystoreType() {
+		withProperties("gemfire.security.ssl.keystoreType:");
+	}
+
+	@Test(expected = ConfigurationPropertiesBindException.class)
+	public void emptyCiphers() {
+		withProperties("gemfire.security.ssl.ciphers:");
+	}
+
+	@Test(expected = ConfigurationPropertiesBindException.class)
 	public void truststoreUriWithoutKeystoreUri() {
 		withProperties("gemfire.security.ssl.truststoreUri:classpath:/trusted.keystore");
 	}
