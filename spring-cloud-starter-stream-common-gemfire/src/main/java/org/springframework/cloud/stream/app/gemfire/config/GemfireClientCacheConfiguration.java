@@ -75,6 +75,9 @@ public class GemfireClientCacheConfiguration {
 	private Properties toGeodeSslProperties(GemfireSslProperties sslProperties) {
 
 		PropertiesBuilder pb = new PropertiesBuilder();
+
+		// locator - SSL communication with and between locators
+		// server - SSL communication between clients and servers
 		pb.setProperty("ssl-enabled-components", "server,locator");
 
 		pb.setProperty("ssl-keystore", this.resolveRemoteStore(sslProperties.getKeystoreUri(),

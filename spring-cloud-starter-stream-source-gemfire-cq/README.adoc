@@ -5,6 +5,10 @@ Continuous query allows client applications to create a GemFire query using Obje
 register a CQ listener which subscribes to the query and is notified every time the query’s result set changes.
 The gemfire-cq source registers a CQ which will post CQEvent messages to the stream.
 
+To enable SSL communication between Geode CQ and the Geode cluster you need to provide the URIs of the
+Keystore and Truststore files using the `gemfire.security.ssl.keystore-uri` and `gemfire.security.ssl.truststore-uri` properties.
+(If a single file is ued for both stores then point both URIs to it).
+
 == Input
 
 N/A

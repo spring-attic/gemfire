@@ -3,6 +3,10 @@
 
 The Gemfire sink allows one to write message payloads to a Gemfire server.
 
+To enable SSL communication between Geode Sink and the Geode cluster you need to provide the URIs of the
+Keystore and Truststore files using the `gemfire.security.ssl.keystore-uri` and `gemfire.security.ssl.truststore-uri` properties.
+(If a single file is ued for both stores then point both URIs to it).
+
 == Input
 
 === Headers

@@ -6,6 +6,10 @@ subscriptions enabled. By default the payload contains the updated entry value,
 but may be controlled by passing in a SpEL expression that uses the EntryEvent as the
 evaluation context.
 
+To enable SSL communication between Geode Source and the Geode cluster you need to provide the URIs of the
+Keystore and Truststore files using the `gemfire.security.ssl.keystore-uri` and `gemfire.security.ssl.truststore-uri` properties.
+(If a single file is ued for both stores then point both URIs to it).
+
 == Input
 
 N/A
