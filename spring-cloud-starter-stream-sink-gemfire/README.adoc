@@ -5,7 +5,7 @@ The Gemfire sink allows one to write message payloads to a Gemfire server.
 
 To enable SSL communication between Geode Sink and the Geode cluster you need to provide the URIs of the
 Keystore and Truststore files using the `gemfire.security.ssl.keystore-uri` and `gemfire.security.ssl.truststore-uri` properties.
-(If a single file is ued for both stores then point both URIs to it).
+(If a single file is used for both stores then point both URIs to it).
 
 == Input
 
@@ -42,13 +42,13 @@ $$gemfire.pool.subscription-enabled$$:: $$Set to true to enable subscriptions fo
 $$gemfire.region.region-name$$:: $$The region name.$$ *($$String$$, default: `$$<none>$$`)*
 $$gemfire.security.password$$:: $$The cache password.$$ *($$String$$, default: `$$<none>$$`)*
 $$gemfire.security.ssl.ciphers$$:: $$Configures the SSL ciphers used for secure Socket connections as an array of valid cipher names.$$ *($$String$$, default: `$$any$$`)*
-$$gemfire.security.ssl.keystore-type$$:: $$Identifies the type of Keystore used for SSL communications. (e.g. {@literal JKS}, {@literal PKCS11}, etc.)$$ *($$String$$, default: `$$JKS$$`)*
-$$gemfire.security.ssl.keystore-uri$$:: $$Location of the pre-created {@literal Keystore} URI to be used for connecting to the Geode cluster$$ *($$Resource$$, default: `$$<none>$$`)*
+$$gemfire.security.ssl.keystore-type$$:: $$Identifies the type of Keystore used for SSL communications (e.g. JKS, PKCS11, etc.).$$ *($$String$$, default: `$$JKS$$`)*
+$$gemfire.security.ssl.keystore-uri$$:: $$Location of the pre-created Keystore URI to be used for connecting to the Geode cluster.$$ *($$Resource$$, default: `$$<none>$$`)*
 $$gemfire.security.ssl.ssl-keystore-password$$:: $$Password for accessing the keys truststore$$ *($$String$$, default: `$$<none>$$`)*
-$$gemfire.security.ssl.ssl-truststore-password$$:: $$Password for accessing the trust store$$ *($$String$$, default: `$$<none>$$`)*
-$$gemfire.security.ssl.truststore-type$$:: $$Identifies the type of truststore used for SSL communications. (e.g. {@literal JKS}, {@literal PKCS11}, etc.)$$ *($$String$$, default: `$$JKS$$`)*
-$$gemfire.security.ssl.truststore-uri$$:: $$Location of the pre-created truststore URI to be used for connecting to the Geode cluster$$ *($$Resource$$, default: `$$<none>$$`)*
-$$gemfire.security.ssl.user-home-directory$$:: $$Local directory to store the truststore and keystore files copied form the remote truststoreUri and getKeystoreUri uris.$$ *($$String$$, default: `$$user.home$$`)*
+$$gemfire.security.ssl.ssl-truststore-password$$:: $$Password for accessing the trust store.$$ *($$String$$, default: `$$<none>$$`)*
+$$gemfire.security.ssl.truststore-type$$:: $$Identifies the type of truststore used for SSL communications (e.g. JKS, PKCS11, etc.).$$ *($$String$$, default: `$$JKS$$`)*
+$$gemfire.security.ssl.truststore-uri$$:: $$Location of the pre-created truststore URI to be used for connecting to the Geode cluster.$$ *($$Resource$$, default: `$$<none>$$`)*
+$$gemfire.security.ssl.user-home-directory$$:: $$Local directory to cache the truststore and keystore files downloaded form the truststoreUri and keystoreUri locations.$$ *($$String$$, default: `$$user.home$$`)*
 $$gemfire.security.username$$:: $$The cache username.$$ *($$String$$, default: `$$<none>$$`)*
 //end::configuration-properties[]
 

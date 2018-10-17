@@ -41,29 +41,29 @@ public class GemfireSslProperties {
 	public static final String LOCAL_KEYSTORE_FILE_NAME = "keystore.keystore";
 
 	/**
-	 * Local directory to store the truststore and keystore files copied form the remote truststoreUri and getKeystoreUri uris.
+	 * Local directory to cache the truststore and keystore files downloaded form the truststoreUri and keystoreUri locations.
 	 */
 	@NotBlank
 	private String userHomeDirectory = USER_HOME_DIRECTORY;
 
 	/**
-	 * Location of the pre-created truststore URI to be used for connecting to the Geode cluster
+	 * Location of the pre-created truststore URI to be used for connecting to the Geode cluster.
 	 */
 	private Resource truststoreUri;
 
 	/**
-	 * Password for accessing the trust store
+	 * Password for accessing the trust store.
 	 */
 	private String sslTruststorePassword;
 
 	/**
-	 * Identifies the type of truststore used for SSL communications. (e.g. {@literal JKS}, {@literal PKCS11}, etc.)
+	 * Identifies the type of truststore used for SSL communications (e.g. JKS, PKCS11, etc.).
 	 */
 	@NotBlank
 	private String truststoreType = "JKS";
 
 	/**
-	 * Location of the pre-created {@literal Keystore} URI to be used for connecting to the Geode cluster
+	 * Location of the pre-created Keystore URI to be used for connecting to the Geode cluster.
 	 */
 	private Resource keystoreUri;
 
@@ -73,7 +73,7 @@ public class GemfireSslProperties {
 	private String sslKeystorePassword;
 
 	/**
-	 * Identifies the type of Keystore used for SSL communications. (e.g. {@literal JKS}, {@literal PKCS11}, etc.)
+	 * Identifies the type of Keystore used for SSL communications (e.g. JKS, PKCS11, etc.).
 	 */
 	@NotBlank
 	private String keystoreType = "JKS";
