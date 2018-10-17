@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 the original author or authors.
+ * Copyright (c) 2016-2018 the original author or authors.
  * Licensed under the Apache License, Version 2.0 (the "License") ;
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,11 +15,8 @@
 
 package org.springframework.cloud.stream.app.gemfire.source;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.geode.cache.client.Pool;
 import org.junit.AfterClass;
@@ -32,22 +29,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cloud.stream.app.test.gemfire.process.ProcessExecutor;
+import org.springframework.cloud.stream.app.test.gemfire.process.GeodeServerLauncherHelper;
 import org.springframework.cloud.stream.app.test.gemfire.process.ProcessWrapper;
-import org.springframework.cloud.stream.app.test.gemfire.process.ServerProcess;
-import org.springframework.cloud.stream.app.test.gemfire.support.FileSystemUtils;
-import org.springframework.cloud.stream.app.test.gemfire.support.ThreadUtils;
 import org.springframework.cloud.stream.test.binder.TestSupportBinderAutoConfiguration;
 import org.springframework.data.gemfire.client.Interest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 /**
  * @author David Turanski
- **/
+ * @author Christian Tzolov
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 
 @SpringBootTest(classes = { GemfireSourceConfiguration.class,
@@ -67,34 +61,7 @@ public class GemfireSourceConfigurationTests {
 
 	@BeforeClass
 	public static void setup() throws IOException {
-		System.out.println(System.getProperty("java.home"));
-		String serverName = "GemFireTestServer";
-
-		File serverWorkingDirectory = new File(FileSystemUtils.WORKING_DIRECTORY, serverName.toLowerCase());
-
-		assertTrue(serverWorkingDirectory.isDirectory() || serverWorkingDirectory.mkdirs());
-
-		List<String> arguments = new ArrayList<String>();
-
-		arguments.add("-Dgemfire.name=" + serverName);
-		arguments.add("gemfire-server.xml");
-
-		serverProcess = ProcessExecutor.launch(serverWorkingDirectory, ServerProcess.class,
-				arguments.toArray(new String[arguments.size()]));
-
-		waitForServerStart(TimeUnit.SECONDS.toMillis(20));
-	}
-
-	private static void waitForServerStart(final long milliseconds) {
-		ThreadUtils.timedWait(milliseconds, TimeUnit.MILLISECONDS.toMillis(500), new ThreadUtils.WaitCondition() {
-			private File serverPidControlFile = new File(serverProcess.getWorkingDirectory(),
-					ServerProcess.getServerProcessControlFilename());
-
-			@Override
-			public boolean waiting() {
-				return !serverPidControlFile.isFile();
-			}
-		});
+		serverProcess = GeodeServerLauncherHelper.startGeode("GemFireTestServer", "gemfire-server.xml");
 	}
 
 	@Test
@@ -106,11 +73,7 @@ public class GemfireSourceConfigurationTests {
 
 	@AfterClass
 	public static void tearDown() {
-		serverProcess.shutdown();
-
-		if (Boolean.valueOf(System.getProperty("spring.gemfire.fork.clean", Boolean.TRUE.toString()))) {
-			org.springframework.util.FileSystemUtils.deleteRecursively(serverProcess.getWorkingDirectory());
-		}
+		GeodeServerLauncherHelper.tearDown(serverProcess);
 	}
 
 }

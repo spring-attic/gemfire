@@ -24,11 +24,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cloud.stream.app.gemfire.config.GemfireSecurityProperties;
 import org.springframework.data.gemfire.client.Interest;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static junit.framework.TestCase.assertNull;
@@ -38,10 +35,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * @author David Turanski
  **/
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest({"gemfire.region.regionName=Stocks", "gemfire.keyExpression='key'",
-		"gemfire.pool.hostAddresses=localhost:42424", "gemfire.pool.connectType=server"})
-@EnableConfigurationProperties({GemfireSinkProperties.class, GemfireSecurityProperties.class})
-@DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
+@SpringBootTest(value = { "gemfire.region.regionName=Stocks", "gemfire.keyExpression='key'",
+		"gemfire.pool.hostAddresses=localhost:42424", "gemfire.pool.connectType=server",
+		"spring.cloud.stream.default.binder=test" },
+		classes = { GemfireSinkConfiguration.class })
 public class GemfireSinkConfigurationTests {
 
 	@Resource(name = "clientRegion")
@@ -53,12 +50,12 @@ public class GemfireSinkConfigurationTests {
 	@Autowired
 	private Pool pool;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	private Interest<?> interest;
 
 	@Test
 	public void testDefaultConfiguration() {
 		assertNull("interest should be null", interest);
-		assertThat("subscriptions should not be enabled",!pool.getSubscriptionEnabled());
+		assertThat("subscriptions should not be enabled", !pool.getSubscriptionEnabled());
 	}
 }
