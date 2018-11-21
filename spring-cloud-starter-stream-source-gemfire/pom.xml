@@ -64,7 +64,7 @@
                         </gemfire-source>
                     </generatedApps>
                     <additionalAppProperties>
-						                <additionalAppProperty>spring.cloud.stream.bindings.input.contentType=text/plain</additionalAppProperty>
+						                <additionalAppProperty>spring.cloud.stream.bindings.output.contentType=text/plain</additionalAppProperty>
 					          </additionalAppProperties>
                     <extraRepositories>
                         <repository>
