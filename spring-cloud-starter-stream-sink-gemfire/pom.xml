@@ -69,9 +69,6 @@
 							<testsIgnored>true</testsIgnored>
 						</gemfire-sink>
 					</generatedApps>
-					<additionalAppProperties>
-						<additionalAppProperty>spring.cloud.stream.bindings.input.contentType=text/plain</additionalAppProperty>
-					</additionalAppProperties>
 					<extraRepositories>
 						<repository>
 							<id>gemstone-release-pivotal</id>
