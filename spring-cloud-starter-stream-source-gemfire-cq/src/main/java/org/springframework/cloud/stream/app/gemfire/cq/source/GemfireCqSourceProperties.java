@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 the original author or authors.
+ * Copyright 2015-2019 the original author or authors.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -26,7 +26,7 @@ import org.springframework.validation.annotation.Validated;
  *
  * @author David Turanski
  */
-@ConfigurationProperties("gemfire")
+@ConfigurationProperties("gemfire.cq")
 @Validated
 public class GemfireCqSourceProperties {
 
@@ -35,7 +35,7 @@ public class GemfireCqSourceProperties {
 	/**
 	 * SpEL expression to use to extract data from a cq event.
 	 */
-	private Expression cqEventExpression = new SpelExpressionParser().parseExpression
+	private Expression eventExpression = new SpelExpressionParser().parseExpression
 			(DEFAULT_EXPRESSION);
 
 	/**
@@ -52,11 +52,11 @@ public class GemfireCqSourceProperties {
 		this.query = query;
 	}
 
-	public Expression getCqEventExpression() {
-		return cqEventExpression;
+	public Expression getEventExpression() {
+		return eventExpression;
 	}
 
-	public void setCqEventExpression(Expression cqEventExpression) {
-		this.cqEventExpression = cqEventExpression;
+	public void setEventExpression(Expression eventExpression) {
+		this.eventExpression = eventExpression;
 	}
 }

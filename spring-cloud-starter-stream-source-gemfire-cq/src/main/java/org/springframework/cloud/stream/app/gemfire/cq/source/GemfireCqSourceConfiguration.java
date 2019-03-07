@@ -119,7 +119,7 @@ public class GemfireCqSourceConfiguration {
 		ContinuousQueryMessageProducer continuousQueryMessageProducer = new
 				ContinuousQueryMessageProducer(continuousQueryListenerContainer(),
 				config.getQuery());
-		continuousQueryMessageProducer.setPayloadExpression(config.getCqEventExpression());
+		continuousQueryMessageProducer.setPayloadExpression(config.getEventExpression());
 		continuousQueryMessageProducer.setOutputChannel(routerChannel());
 		return continuousQueryMessageProducer;
 	}

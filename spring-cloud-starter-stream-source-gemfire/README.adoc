@@ -29,7 +29,7 @@ N/A
 The **$$gemfire$$** $$source$$ supports the following configuration properties:
 
 //tag::configuration-properties[]
-$$gemfire.cache-event-expression$$:: $$SpEL expression to extract fields from a cache event.$$ *($$Expression$$, default: `$$<none>$$`)*
+$$gemfire.client.pdx-read-serialized$$:: $$Deserialize the Geode objects into PdxInstance instead of the domain class.$$ *($$Boolean$$, default: `$$false$$`)*
 $$gemfire.pool.connect-type$$:: $$Specifies connection type: 'server' or 'locator'.$$ *($$ConnectType$$, default: `$$<none>$$`, possible values: `locator`,`server`)*
 $$gemfire.pool.host-addresses$$:: $$Specifies one or more Gemfire locator or server addresses formatted as [host]:[port].$$ *($$InetSocketAddress[]$$, default: `$$<none>$$`)*
 $$gemfire.pool.subscription-enabled$$:: $$Set to true to enable subscriptions for the client pool. Required to sync updates to the client cache.$$ *($$Boolean$$, default: `$$false$$`)*
@@ -44,6 +44,7 @@ $$gemfire.security.ssl.truststore-type$$:: $$Identifies the type of truststore u
 $$gemfire.security.ssl.truststore-uri$$:: $$Location of the pre-created truststore URI to be used for connecting to the Geode cluster.$$ *($$Resource$$, default: `$$<none>$$`)*
 $$gemfire.security.ssl.user-home-directory$$:: $$Local directory to cache the truststore and keystore files downloaded form the truststoreUri and keystoreUri locations.$$ *($$String$$, default: `$$user.home$$`)*
 $$gemfire.security.username$$:: $$The cache username.$$ *($$String$$, default: `$$<none>$$`)*
+$$gemfire.source.cache-event-expression$$:: $$SpEL expression to extract fields from a cache event.$$ *($$Expression$$, default: `$$<none>$$`)*
 //end::configuration-properties[]
 
 == Build
@@ -61,7 +62,7 @@ $ ./mvnw clean package
 == Examples
 
 ```
-java -jar ./gemfire-source.jar --gemfire.region.region-name=MyRegion --gemfire.cacheEventExpression="newValue"
+java -jar ./gemfire-source.jar --gemfire.region.region-name=MyRegion --gemfire.source.cacheEventExpression="newValue"
 ```
 
 //end::ref-doc[]

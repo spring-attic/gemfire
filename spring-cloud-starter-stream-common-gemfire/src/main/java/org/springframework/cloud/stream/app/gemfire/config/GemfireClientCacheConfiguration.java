@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018 the original author or authors.
+ * Copyright (c) 2016-2019 the original author or authors.
  * Licensed under the Apache License, Version 2.0 (the "License") ;
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,6 +20,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.apache.geode.pdx.ReflectionBasedAutoSerializer;
+
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.Resource;
@@ -32,7 +34,8 @@ import org.springframework.util.StringUtils;
  * @author David Turanski
  * @author Christian Tzolov
  */
-@EnableConfigurationProperties({ GemfireSecurityProperties.class, GemfireSslProperties.class })
+@EnableConfigurationProperties({ GemfireClientCacheProperties.class, GemfireSecurityProperties.class,
+		GemfireSslProperties.class })
 public class GemfireClientCacheConfiguration {
 
 	private static final String SECURITY_CLIENT = "security-client-auth-init";
@@ -40,7 +43,8 @@ public class GemfireClientCacheConfiguration {
 	private static final String SECURITY_PASSWORD = "security-password";
 
 	@Bean
-	public ClientCacheFactoryBean clientCache(GemfireSecurityProperties securityProperties, GemfireSslProperties sslProperties) {
+	public ClientCacheFactoryBean clientCache(GemfireClientCacheProperties clientCacheProperties,
+			GemfireSecurityProperties securityProperties, GemfireSslProperties sslProperties) {
 		ClientCacheFactoryBean clientCacheFactoryBean = new ClientCacheFactoryBean();
 		clientCacheFactoryBean.setUseBeanFactoryLocator(false);
 		clientCacheFactoryBean.setPoolName("gemfirePool");
@@ -63,6 +67,11 @@ public class GemfireClientCacheConfiguration {
 		}
 
 		clientCacheFactoryBean.setReadyForEvents(true);
+
+		if (clientCacheProperties.isPdxReadSerialized()) {
+			clientCacheFactoryBean.setPdxSerializer(new ReflectionBasedAutoSerializer(".*"));
+			clientCacheFactoryBean.setPdxReadSerialized(true);
+		}
 
 		return clientCacheFactoryBean;
 	}

@@ -28,11 +28,12 @@ N/A
 The **$$gemfire-cq$$** $$source$$ supports the following configuration properties:
 
 //tag::configuration-properties[]
-$$gemfire.cq-event-expression$$:: $$SpEL expression to use to extract data from a cq event.$$ *($$Expression$$, default: `$$<none>$$`)*
+$$gemfire.client.pdx-read-serialized$$:: $$Deserialize the Geode objects into PdxInstance instead of the domain class.$$ *($$Boolean$$, default: `$$false$$`)*
+$$gemfire.cq.event-expression$$:: $$SpEL expression to use to extract data from a cq event.$$ *($$Expression$$, default: `$$<none>$$`)*
+$$gemfire.cq.query$$:: $$The OQL query$$ *($$String$$, default: `$$<none>$$`)*
 $$gemfire.pool.connect-type$$:: $$Specifies connection type: 'server' or 'locator'.$$ *($$ConnectType$$, default: `$$<none>$$`, possible values: `locator`,`server`)*
 $$gemfire.pool.host-addresses$$:: $$Specifies one or more Gemfire locator or server addresses formatted as [host]:[port].$$ *($$InetSocketAddress[]$$, default: `$$<none>$$`)*
 $$gemfire.pool.subscription-enabled$$:: $$Set to true to enable subscriptions for the client pool. Required to sync updates to the client cache.$$ *($$Boolean$$, default: `$$false$$`)*
-$$gemfire.query$$:: $$The OQL query$$ *($$String$$, default: `$$<none>$$`)*
 $$gemfire.security.password$$:: $$The cache password.$$ *($$String$$, default: `$$<none>$$`)*
 $$gemfire.security.ssl.ciphers$$:: $$Configures the SSL ciphers used for secure Socket connections as an array of valid cipher names.$$ *($$String$$, default: `$$any$$`)*
 $$gemfire.security.ssl.keystore-type$$:: $$Identifies the type of Keystore used for SSL communications (e.g. JKS, PKCS11, etc.).$$ *($$String$$, default: `$$JKS$$`)*
@@ -60,7 +61,7 @@ $ ./mvnw clean package
 == Examples
 
 ```
-java -jar gemfire-cq-source.jar --gemfire.query=
+java -jar gemfire-cq-source.jar --gemfire.cq.query=
 ```
 
 //end::ref-doc[]

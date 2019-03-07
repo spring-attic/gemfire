@@ -35,7 +35,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  **/
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = { GemfireCqSourceConfigurationTests.TestConfig.class }, properties = {
-		"gemfire.query= Select * from /Stocks",
+		"gemfire.cq.query= Select * from /Stocks",
 		"gemfire.security.username=user",
 		"gemfire.security.password=password"})
 public class GemfireCqSourceConfigurationTests {
