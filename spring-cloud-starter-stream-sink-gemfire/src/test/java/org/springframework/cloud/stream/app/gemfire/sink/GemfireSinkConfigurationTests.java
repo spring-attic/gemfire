@@ -35,7 +35,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * @author David Turanski
  **/
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(value = { "gemfire.region.regionName=Stocks", "gemfire.keyExpression='key'",
+@SpringBootTest(value = { "gemfire.region.regionName=Stocks", "gemfire.sink.keyExpression='key'",
 		"gemfire.pool.hostAddresses=localhost:42424", "gemfire.pool.connectType=server",
 		"spring.cloud.stream.default.binder=test" },
 		classes = { GemfireSinkConfiguration.class })

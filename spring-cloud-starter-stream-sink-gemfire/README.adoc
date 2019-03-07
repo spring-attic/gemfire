@@ -34,8 +34,6 @@ N/A
 The **$$gemfire$$** $$sink$$ has the following options:
 
 //tag::configuration-properties[]
-$$gemfire.json$$:: $$Indicates if the Gemfire region stores json objects as native Gemfire PdxInstance$$ *($$Boolean$$, default: `$$false$$`)*
-$$gemfire.key-expression$$:: $$SpEL expression to use as a cache key$$ *($$String$$, default: `$$<none>$$`)*
 $$gemfire.pool.connect-type$$:: $$Specifies connection type: 'server' or 'locator'.$$ *($$ConnectType$$, default: `$$<none>$$`, possible values: `locator`,`server`)*
 $$gemfire.pool.host-addresses$$:: $$Specifies one or more Gemfire locator or server addresses formatted as [host]:[port].$$ *($$InetSocketAddress[]$$, default: `$$<none>$$`)*
 $$gemfire.pool.subscription-enabled$$:: $$Set to true to enable subscriptions for the client pool. Required to sync updates to the client cache.$$ *($$Boolean$$, default: `$$false$$`)*
@@ -50,6 +48,8 @@ $$gemfire.security.ssl.truststore-type$$:: $$Identifies the type of truststore u
 $$gemfire.security.ssl.truststore-uri$$:: $$Location of the pre-created truststore URI to be used for connecting to the Geode cluster.$$ *($$Resource$$, default: `$$<none>$$`)*
 $$gemfire.security.ssl.user-home-directory$$:: $$Local directory to cache the truststore and keystore files downloaded form the truststoreUri and keystoreUri locations.$$ *($$String$$, default: `$$user.home$$`)*
 $$gemfire.security.username$$:: $$The cache username.$$ *($$String$$, default: `$$<none>$$`)*
+$$gemfire.sink.json$$:: $$Indicates if the Gemfire region stores json objects as native Gemfire PdxInstance$$ *($$Boolean$$, default: `$$false$$`)*
+$$gemfire.sink.key-expression$$:: $$SpEL expression to use as a cache key$$ *($$String$$, default: `$$<none>$$`)*
 //end::configuration-properties[]
 
 == Build
@@ -67,7 +67,7 @@ $ ./mvnw clean package
 == Examples
 
 ```
-java -jar gemfire-sink.jar --gemfire.keyExpression=
+java -jar gemfire-sink.jar --gemfire.sink.keyExpression=
 ```
 
 //end::ref-doc[]

@@ -2,6 +2,19 @@
 
 To learn more about this application and the supported properties, please review the following link.
 
+Following table what versions of Apache Geode, Gemfire and PCC are supported by the Gemfire App releases:
+.Table Compatibility Table
+|===
+|Gemfire App Starter| Spring Data Geode  | Apache Geode |  GemFire | Supported PCC |
+
+|2.1.1.RELEASE
+|2.1.5.RELEASE
+|1.6.x and higher
+|9.5.x and higher
+|PCC 1.5 / PCC 1.6
+|===
+
+
 ## Gemfire Sources
 include::spring-cloud-starter-stream-source-gemfire/README.adoc[]
 

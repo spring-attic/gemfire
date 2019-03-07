@@ -51,7 +51,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE,
 		properties = { "gemfire.region.regionName=Stocks",
-				"gemfire.keyExpression='key'",
+				"gemfire.sink.keyExpression='key'",
 				"gemfire.pool.hostAddresses=localhost:42424",
 				"gemfire.pool.connectType=server",
 				"spring.cloud.stream.default.binder=test"
@@ -75,7 +75,7 @@ public abstract class GemfireSinkIntegrationTests {
 		serverProcess = GeodeServerLauncherHelper.startGeode("GemFireTestServer", "gemfire-server.xml");
 	}
 
-	@TestPropertySource(properties = { "gemfire.json=false" })
+	@TestPropertySource(properties = { "gemfire.sink.json=false" })
 	public static class GemfireSinkNonJsonModeTests extends GemfireSinkIntegrationTests {
 
 		@Test
@@ -85,7 +85,7 @@ public abstract class GemfireSinkIntegrationTests {
 		}
 	}
 
-	@TestPropertySource(properties = "gemfire.json=true")
+	@TestPropertySource(properties = "gemfire.sink.json=true")
 	public static class GemfireSinkJsonModeTests extends GemfireSinkIntegrationTests {
 
 		@Test
