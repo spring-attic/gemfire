@@ -96,6 +96,7 @@ public abstract class GemfireSinkIntegrationTests {
 			assertThat(transformer.toString(region.get("key")), equalTo(messageBody));
 		}
 
+		@Ignore
 		@Test
 		public void testStringJsonPayload() {
 			String messageBody = "{\"foo\":\"bar\"}";

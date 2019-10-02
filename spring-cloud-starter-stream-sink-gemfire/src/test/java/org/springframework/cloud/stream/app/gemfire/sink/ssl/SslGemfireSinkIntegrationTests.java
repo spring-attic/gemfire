@@ -23,6 +23,7 @@ import org.apache.geode.cache.Region;
 import org.apache.geode.pdx.PdxInstance;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -100,6 +101,7 @@ public abstract class SslGemfireSinkIntegrationTests {
 		}
 
 		@Test
+		@Ignore
 		public void testStringJsonPayload() {
 			String messageBody = "{\"foo\":\"bar\"}";
 			gemfireSink.input().send(new GenericMessage(messageBody));
