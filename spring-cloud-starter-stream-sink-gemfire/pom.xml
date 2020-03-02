@@ -77,6 +77,14 @@
 							<snapshotEnabled>false</snapshotEnabled>
 						</repository>
 					</extraRepositories>
+					<enableContainerImageMetadata>true</enableContainerImageMetadata>
+					<metadataSourceTypeFilters>
+						<filter>org.springframework.cloud.stream.app.gemfire.sink.GemfireSinkProperties</filter>
+						<filter>org.springframework.cloud.stream.app.gemfire.config.GemfireRegionProperties</filter>
+						<filter>org.springframework.cloud.stream.app.gemfire.config.GemfirePoolProperties</filter>
+						<filter>org.springframework.cloud.stream.app.gemfire.config.GemfireSecurityProperties</filter>
+						<filter>org.springframework.cloud.stream.app.gemfire.config.GemfireSslProperties</filter>
+					</metadataSourceTypeFilters>
 				</configuration>
 			</plugin>
 		</plugins>
