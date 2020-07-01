@@ -22,7 +22,7 @@
 		<fast.classpath.scanner.version>2.0.21</fast.classpath.scanner.version>
 		<spring-integration.version>5.1.7.RELEASE</spring-integration.version>
 
-		<log4j.version>2.8.2</log4j.version>
+		<log4j.version>2.13.3</log4j.version>
 		<jline.version>2.11</jline.version>
 		<spirng.shell.version>1.2.0.RELEASE</spirng.shell.version>
 		<sshd-core.version>0.10.1</sshd-core.version>
